@@ -1,0 +1,197 @@
+/* HeroBanner.module.css */
+
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 80vh;
+  min-height: 500px;
+  overflow: hidden;
+  background: #0a0a0f;
+  margin-left: calc(-50vw + 50%);
+}
+
+.backgroundContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  /* Remove background-attachment: fixed — it fights with opacity transitions */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  /* Smooth crossfade here, not in JS */
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+  pointer-events: none;
+}
+
+/* Dark gradient — bottom heavy so content is readable */
+.gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(10,10,15,0.85) 0%, rgba(10,10,15,0.3) 60%, transparent 100%),
+    linear-gradient(to top, rgba(10,10,15,1) 0%, rgba(10,10,15,0.4) 40%, transparent 70%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Content sits over the gradient */
+.content {
+  position: absolute;
+  bottom: 80px;
+  left: 48px;
+  z-index: 4;
+  max-width: 540px;
+  pointer-events: none;
+}
+
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 6vw, 72px);
+  color: #ffffff;
+  line-height: 1;
+  margin: 0 0 12px 0;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+  letter-spacing: 1px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.year {
+  font-size: 15px;
+  color: #b3b3c6;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.genres {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.genreBadge {
+  font-size: 12px;
+}
+
+.overview {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: #d0d0e0;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover {
+  transform: scale(1.04);
+  opacity: 0.92;
+}
+
+.primary {
+  background: #e50914;
+  color: #ffffff;
+}
+
+.secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* Slide indicator dots */
+.dots {
+  position: absolute;
+  bottom: 24px;
+  right: 40px;
+  z-index: 5;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s ease, transform 0.25s ease, width 0.25s ease;
+  flex-shrink: 0;
+}
+
+.dotActive {
+  background: var(--accent);
+  width: 24px;
+  border-radius: 4px;
+  transform: none;
+}
+
+.dot:hover:not(.dotActive) {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .hero {
+    height: 80vh;
+  }
+
+  .content {
+    left: 20px;
+    right: 20px;
+    bottom: 60px;
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .overview {
+    font-size: 13px;
+    line-clamp: 2;
+  }
+
+  .button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}

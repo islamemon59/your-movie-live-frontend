@@ -1,0 +1,176 @@
+.ticker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  max-width: 500px;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(255,255,255,0.04);
+  border-radius: 20px;
+  padding: 5px 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.25s;
+  height: 34px;
+}
+.ticker:hover {
+  background: rgba(229,9,20,0.08);
+  border-color: rgba(229,9,20,0.3);
+}
+.hasLive {
+  border-color: rgba(229,9,20,0.4);
+  background: rgba(229,9,20,0.06);
+}
+
+/* Label (LIVE / FIFA badge) */
+.label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #e50914;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.6px;
+  flex-shrink: 0;
+}
+
+/* Pulsing red dot used in LIVE label */
+.pulseDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e50914;
+  animation: pulse 1.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse { 0%,100%{ opacity:1; transform:scale(1) } 50%{ opacity:0.35; transform:scale(0.7) } }
+
+/* Scrolling track */
+.track {
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+.inner {
+  display: flex;
+  width: max-content;
+  animation: scroll 50s linear infinite;
+}
+.ticker:hover .inner { animation-play-state: paused; }
+@keyframes scroll { 0%{ transform:translateX(0) } 100%{ transform:translateX(-50%) } }
+
+/* Each duplicate set */
+.copy {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding-right: 40px;
+}
+
+/* Single match item */
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+/* Date / time pill */
+.matchTime {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #4a4a5e;
+  background: #1a1a28;
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-right: 3px;
+  white-space: nowrap;
+}
+
+/* Small pulsing dot inside the time pill when live */
+.liveDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e50914;
+  animation: pulse 1.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* FT label */
+.ftLabel {
+  color: #6b6b80;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Flag image */
+.flag {
+  width: 20px;
+  height: 15px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* Letter fallback when flag missing */
+.flagFallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 14px;
+  background: #1f1f2e;
+  border-radius: 2px;
+  font-size: 8px;
+  font-weight: 800;
+  color: #6b6b80;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: -0.3px;
+}
+
+/* Team abbreviation text */
+.teamTxt {
+  font-size: 11px;
+  font-weight: 700;
+  color: #c8c8d8;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.3px;
+}
+
+/* Score / vs text */
+.scoreTxt {
+  font-size: 11px;
+  font-weight: 800;
+  color: #6b6b80;
+  font-family: 'DM Sans', sans-serif;
+  padding: 0 4px;
+  min-width: 24px;
+  text-align: center;
+}
+.scoreLive { color: #e50914; }
+
+/* Divider between matches */
+.sep {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background: #2a2a3e;
+  margin: 0 12px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .ticker { max-width: 220px; padding: 4px 10px; }
+}
+@media (max-width: 768px) {
+  .ticker { display: none; }
+}

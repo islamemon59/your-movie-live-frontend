@@ -1,0 +1,146 @@
+/* Player Container */
+.playerContainer {
+  width: 100%;
+  margin: 24px 0;
+}
+
+/* Server bar */
+.serverBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  background: #16161f;
+  border-radius: 10px;
+  border: 1px solid #1f1f2e;
+}
+
+.serverLabel {
+  font-size: 13px;
+  color: #b3b3c6;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.serverTabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.serverTab {
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid #2a2a3e;
+  background: transparent;
+  color: #b3b3c6;
+  transition: all 0.2s ease;
+}
+
+.serverTab:hover {
+  border-color: #e50914;
+  color: #ffffff;
+  background: rgba(229, 9, 20, 0.08);
+}
+
+.activeTab {
+  background: #e50914 !important;
+  border-color: #e50914 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* Player wrapper — 16:9 */
+.playerWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Loading overlay */
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #0a0a0f;
+  z-index: 2;
+  color: #b3b3c6;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid #1f1f2e;
+  border-top-color: #e50914;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.helperText {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #606070;
+  font-family: 'DM Sans', sans-serif;
+  text-align: center;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .serverBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .serverTab {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .playerContainer {
+    gap: 12px;
+  }
+
+  .serverToggleBtn {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+
+  .serverPanel {
+    padding: 12px;
+  }
+
+  .serverHeader h3 {
+    font-size: 13px;
+  }
+}

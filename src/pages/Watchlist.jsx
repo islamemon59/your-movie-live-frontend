@@ -10,7 +10,7 @@ const Watchlist = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    document.title = 'My Watchlist — yourmovielive'
+    document.title = 'My Watchlist — YourMovieLive'
   }, [])
 
   const handleRemove = (id, mediaType) => {

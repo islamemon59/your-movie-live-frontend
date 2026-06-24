@@ -19,7 +19,7 @@ export const Search = () => {
   )
 
   useEffect(() => {
-    document.title = query ? `Search: ${query} — yourmovielive` : 'Search — yourmovielive'
+    document.title = query ? `Search: ${query} — YourMovieLive` : 'Search — YourMovieLive'
     // eslint-disable-next-line react-hooks/exhaustive-deps
     if (query) recordSearch(query)  // recordSearch is stable (useCallback with no deps)
   }, [query])

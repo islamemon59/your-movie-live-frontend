@@ -5,6 +5,7 @@ import { UserPreferencesProvider } from './context/UserPreferencesContext.jsx'
 import { Header } from './components/layout/Header.jsx'
 import { Footer } from './components/layout/Footer.jsx'
 import { Loader } from './components/ui/Loader.jsx'
+import { BackButton } from './components/ui/BackButton.jsx'
 import { Search } from './pages/Search.jsx'
 import { NotFound } from './pages/NotFound.jsx'
 import { Home } from './pages/Home.jsx'
@@ -20,6 +21,7 @@ import Live from './pages/Live.jsx'
 const MovieDetail = lazy(() => import('./pages/MovieDetail.jsx'))
 const TVDetail = lazy(() => import('./pages/TVDetail.jsx'))
 const Watchlist = lazy(() => import('./pages/Watchlist.jsx'))
+const LanguagePage = lazy(() => import('./pages/LanguagePage.jsx'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -57,11 +59,13 @@ function App() {
                 <Route path="/watchlist" element={<Watchlist />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/category/:genreId/:genreName" element={<Category />} />
+                <Route path="/language/:langCode/:langName" element={<LanguagePage />} />
                 <Route path="/history" element={<History />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
           </main>
+          <BackButton />
           <Footer />
         </BrowserRouter>
       </UserPreferencesProvider>

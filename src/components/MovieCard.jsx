@@ -13,7 +13,7 @@ export const MovieCard = ({ id, title, posterPath, releaseDate, voteAverage, med
   }
 
   return (
-    <div className={styles.card} onClick={handleClick}>
+    <div className={styles.card} data-scroll-disable onClick={handleClick}>
       <div className={styles.posterContainer}>
         {posterUrl ? (
           <img

@@ -101,3 +101,8 @@ button {
 
 scrollbar-width: thin;
 scrollbar-color: var(--border) transparent;
+
+/* Disable hover/pointer state on cards while scrolling to prevent jank */
+body.is-scrolling [data-scroll-disable] {
+  pointer-events: none;
+}

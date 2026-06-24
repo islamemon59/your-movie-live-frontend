@@ -5,6 +5,7 @@ import { useWatchlistContext } from "../context/WatchlistContext.jsx";
 import { useUserPreferences } from "../context/UserPreferencesContext.jsx";
 import { getTVDetails, getTVSeason, getMovieTrailer } from "../utils/tmdb.js";
 import { DownloadButton } from "../components/ui/DownloadButton.jsx";
+import { HowToDownload } from "../components/ui/HowToDownload.jsx";
 import { BookmarkPlus, Bookmark } from "lucide-react";
 import { TrailerBanner } from "../components/detail/TrailerBanner.jsx";
 import { MediaInfo } from "../components/detail/MediaInfo.jsx";
@@ -36,7 +37,7 @@ const TVDetail = () => {
 
   useEffect(() => {
     if (tv?.name) {
-      document.title = `${tv.name} — yourmovielive`;
+      document.title = `${tv.name} — YourMovieLive`;
     }
   }, [tv]);
 
@@ -137,6 +138,8 @@ const TVDetail = () => {
               season={selectedSeason}
               episode={selectedEpisode}
             />
+
+            <HowToDownload mediaType="tv" />
           </div>
         </div>
       </TrailerBanner>
@@ -144,7 +147,7 @@ const TVDetail = () => {
       <div
         style={{ maxWidth: "1400px", margin: "0 auto", padding: "40px 32px" }}
       >
-        {/* <MediaInfo media={tv} mediaType="tv" /> */}
+        <MediaInfo media={tv} mediaType="tv" />
 
         <div style={{ margin: "40px 0" }}>
           <h3

@@ -11,6 +11,7 @@ import Player from '../components/detail/Player.jsx'
 import { CastSection } from '../components/detail/CastSection.jsx'
 import { SliderRow } from '../components/slider/SliderRow.jsx'
 import { DownloadButton } from '../components/ui/DownloadButton.jsx'
+import { HowToDownload } from '../components/ui/HowToDownload.jsx'
 import { Loader } from '../components/ui/Loader.jsx'
 import { ErrorMessage } from '../components/ui/ErrorMessage.jsx'
 
@@ -24,7 +25,7 @@ const MovieDetail = () => {
 
   useEffect(() => {
     if (movie?.title) {
-      document.title = `${movie.title} — yourmovielive`
+      document.title = `${movie.title} — YourMovieLive`
     }
   }, [movie])
 
@@ -117,6 +118,8 @@ const MovieDetail = () => {
                 mediaType="movie"
               />
 
+              <HowToDownload mediaType="movie" />
+
               <button
                 onClick={handleWatchlistToggle}
                 style={{
@@ -145,6 +148,8 @@ const MovieDetail = () => {
       )}
 
       <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '40px 32px' }}>
+
+        <MediaInfo media={movie} mediaType="movie" />
 
         {/* Player — only renders when showPlayer is true */}
         {showPlayer && (

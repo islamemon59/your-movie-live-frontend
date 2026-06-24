@@ -111,7 +111,7 @@ export default function LiveTV() {
   const cache = useRef({})
 
   useEffect(() => {
-    document.title = 'Live TV — yourmovielive'
+    document.title = 'Live TV — YourMovieLive'
   }, [])
 
   const loadCategory = useCallback(async (cat) => {

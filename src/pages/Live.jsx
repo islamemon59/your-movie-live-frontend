@@ -53,7 +53,7 @@ export default function Live() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = '⚽ FIFA World Cup 2026 | yourmovielive';
+    document.title = '⚽ FIFA World Cup 2026 | YourMovieLive';
   }, []);
 
   const { data: todayData,    loading: loadingToday,    error: errToday,    retry: retryToday    } = useMatches(getTodayMatches,    60_000);

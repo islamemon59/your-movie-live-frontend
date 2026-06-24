@@ -427,7 +427,7 @@
 
   .liveGrid,
   .matchGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .tabs {
@@ -436,6 +436,22 @@
 
   .tab {
     flex: 1;
+    min-width: 0;
     justify-content: center;
+  }
+}
+
+/* Small phones — shrink the 3 schedule tabs so they fit without overflow */
+@media (max-width: 430px) {
+  .tab {
+    padding: 8px 6px;
+    gap: 4px;
+    font-size: 11.5px;
+    text-align: center;
+  }
+
+  .tabCount {
+    padding: 1px 5px;
+    font-size: 9.5px;
   }
 }

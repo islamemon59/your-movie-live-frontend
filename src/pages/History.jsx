@@ -31,7 +31,7 @@ export const History = () => {
   const browsed      = prefs.browsed        || []
 
   useEffect(() => {
-    document.title = 'History — yourmovielive'
+    document.title = 'History — YourMovieLive'
   }, [])
 
   return (

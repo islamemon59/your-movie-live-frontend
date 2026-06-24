@@ -80,6 +80,17 @@
 }
 .linkGroup button:hover { color: var(--accent); }
 
+.contactLink {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  text-decoration: none;
+  line-height: 1.8;
+  word-break: break-all;
+  transition: color var(--transition);
+}
+.contactLink:hover { color: var(--accent); }
+
 /* Bottom bar */
 .bottom {
   display: flex;

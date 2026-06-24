@@ -13,7 +13,7 @@ import {
 
 const Shows = () => {
   useEffect(() => {
-    document.title = 'TV Shows — yourmovielive'
+    document.title = 'TV Shows — YourMovieLive'
   }, [])
 
   return (

@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 import { SliderCard } from "./SliderCard.jsx";
 import styles from "../../styles/SliderRow.module.css";
 
@@ -6,20 +6,6 @@ export const SliderRow = ({ items, showRank = false, mediaType = "movie", isLand
   const containerRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-
-  // Redirect vertical wheel events to the page so the user can scroll normally
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const handler = (e) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault();
-        window.scrollBy({ top: e.deltaY, behavior: 'auto' });
-      }
-    };
-    el.addEventListener('wheel', handler, { passive: false });
-    return () => el.removeEventListener('wheel', handler);
-  }, []);
 
   const checkScroll = useCallback(() => {
     if (!containerRef.current) return;
@@ -64,6 +50,7 @@ export const SliderRow = ({ items, showRank = false, mediaType = "movie", isLand
       )}
 
       <div
+        data-scroll-disable
         className={styles.container}
         ref={containerRef}
         onScroll={checkScroll}

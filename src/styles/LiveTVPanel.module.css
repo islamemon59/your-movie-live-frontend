@@ -81,6 +81,21 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.freeBadge {
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #0a0a0f;
+  background: #22c55e;
+  padding: 1px 5px;
+  border-radius: 4px;
+  line-height: 1.4;
 }
 .recoChName {
   font-family: 'DM Sans', sans-serif;

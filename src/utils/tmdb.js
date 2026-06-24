@@ -838,10 +838,29 @@ export const getMoviesByGenre = async (genreId, page = 1) => {
   }
 }
 
+// TMDB uses different genre IDs for movies vs TV. The browse menu links carry
+// MOVIE genre IDs, so translate them to the closest TV genre before querying
+// /discover/tv. IDs that are identical across movies & TV (e.g. Animation 16,
+// Comedy 35, Crime 80, Drama 18, Family 10751, Mystery 9648, Western 37) are
+// left untranslated and pass through unchanged.
+export const MOVIE_TO_TV_GENRE = {
+  28: 10759,     // Action          → Action & Adventure
+  12: 10759,     // Adventure       → Action & Adventure
+  14: 10765,     // Fantasy         → Sci-Fi & Fantasy
+  878: 10765,    // Sci-Fi          → Sci-Fi & Fantasy
+  10752: 10768,  // War             → War & Politics
+  36: 10768,     // History         → War & Politics
+  27: 9648,      // Horror          → Mystery (no TV horror genre)
+  53: 9648,      // Thriller        → Mystery (no TV thriller genre)
+  10749: 18,     // Romance         → Drama   (no TV romance genre)
+  10402: 10764,  // Music           → Reality (no TV music genre)
+}
+
 export const getTVByGenre = async (genreId, page = 1) => {
   try {
+    const tvGenreId = MOVIE_TO_TV_GENRE[genreId] ?? genreId
     const url = buildUrl('/discover/tv', {
-      with_genres: genreId,
+      with_genres: tvGenreId,
       sort_by: 'popularity.desc',
       page
     })
@@ -867,6 +886,44 @@ export const getMoviesByGenreIds = async (genreIds) => {
     if (!response.ok) throw new Error(`HTTP ${response.status}`)
     const data = await response.json()
     return data.results.slice(0, 25)
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+// ─── LANGUAGE / REGIONAL ─────────────────────────────────
+
+export const getMoviesByLanguage = async (langCode, page = 1) => {
+  try {
+    const params = { sort_by: 'popularity.desc', page }
+    if (langCode === 'bollywood') {
+      params.with_original_language = 'hi'
+      params.with_origin_country = 'IN'
+    } else {
+      params.with_original_language = langCode
+    }
+    const url = buildUrl('/discover/movie', params)
+    const response = await fetch(url)
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+    return await response.json()
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+export const getTVByLanguage = async (langCode, page = 1) => {
+  try {
+    const params = { sort_by: 'popularity.desc', page }
+    if (langCode === 'bollywood') {
+      params.with_original_language = 'hi'
+      params.with_origin_country = 'IN'
+    } else {
+      params.with_original_language = langCode
+    }
+    const url = buildUrl('/discover/tv', params)
+    const response = await fetch(url)
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+    return await response.json()
   } catch (error) {
     handleError(error)
   }

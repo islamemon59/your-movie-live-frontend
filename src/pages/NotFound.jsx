@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 export const NotFound = () => {
   useEffect(() => {
-    document.title = '404 - Page Not Found — yourmovielive'
+    document.title = '404 - Page Not Found — YourMovieLive'
   }, [])
 
   const navigate = useNavigate()

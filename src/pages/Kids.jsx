@@ -12,7 +12,7 @@ import {
 
 const Kids = () => {
   useEffect(() => {
-    document.title = 'Kids — yourmovielive'
+    document.title = 'Kids — YourMovieLive'
   }, [])
 
   return (

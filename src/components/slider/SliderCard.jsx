@@ -5,7 +5,7 @@ import { IMG } from '../../config.js'
 import { Badge } from '../ui/Badge.jsx'
 import { useUserPreferences } from '../../context/UserPreferencesContext.jsx'
 
-export const SliderCard = ({ item, rank, mediaType = 'movie', poster_path, title, vote_average, isLandscape = false }) => {
+export const SliderCard = ({ item, rank, mediaType = 'movie', poster_path, title, vote_average, isLandscape = false, fluid = false }) => {
   const navigate = useNavigate()
   const { recordView, hasBrowsed, prefs } = useUserPreferences()
   const [isHovered, setIsHovered] = useState(false)
@@ -29,7 +29,8 @@ export const SliderCard = ({ item, rank, mediaType = 'movie', poster_path, title
 
   return (
     <div
-      className={`${styles.cardWrapper} ${isLandscape ? styles.landscapeWrapper : ''}`}
+      data-scroll-disable
+      className={`${styles.cardWrapper} ${isLandscape ? styles.landscapeWrapper : ''} ${fluid ? styles.fluidWrapper : ''}`}
       style={rank && !isLandscape ? { position: 'relative', marginLeft: '40px' } : {}}
     >
       {rank && !isLandscape && (
@@ -37,7 +38,7 @@ export const SliderCard = ({ item, rank, mediaType = 'movie', poster_path, title
       )}
 
       <div
-        className={`${styles.card} ${isLandscape ? styles.cardLandscape : ''} ${isHovered ? styles.hovered : ''}`}
+        className={`${styles.card} ${isLandscape ? styles.cardLandscape : ''} ${fluid ? styles.fluidCard : ''} ${isHovered ? styles.hovered : ''}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleClick}

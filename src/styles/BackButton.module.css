@@ -1,0 +1,44 @@
+/* Hidden on desktop — the desktop header nav already provides navigation. */
+.backBtn {
+  display: none;
+}
+
+/* Visible only on mobile / small-tablet, matching the header's hamburger breakpoint. */
+@media (max-width: 768px) {
+  .backBtn {
+    position: fixed;
+    bottom: 22px;
+    left: 16px;
+    z-index: 999;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 16px 10px 11px;
+    border-radius: 999px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition: background var(--transition), border-color var(--transition), transform var(--transition);
+  }
+
+  .backBtn:hover,
+  .backBtn:active {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* Account for iOS home-indicator safe area. */
+  @supports (padding: env(safe-area-inset-bottom)) {
+    .backBtn {
+      bottom: calc(22px + env(safe-area-inset-bottom));
+    }
+  }
+}

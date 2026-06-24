@@ -70,9 +70,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 170px);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 20px 16px;
-  justify-content: start;
   overflow: visible;
 }
 
@@ -100,6 +99,13 @@
   background: var(--accent-hover);
 }
 
+/* On mobile the global floating back button replaces the inline one. */
+@media (max-width: 768px) {
+  .back {
+    display: none;
+  }
+}
+
 @media (max-width: 600px) {
   .page {
     padding: 20px 12px;
@@ -108,7 +114,7 @@
     font-size: 26px;
   }
   .grid {
-    grid-template-columns: repeat(auto-fill, 150px);
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 14px 10px;
   }
 }

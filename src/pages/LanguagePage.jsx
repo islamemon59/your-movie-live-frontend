@@ -1,12 +1,20 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getMoviesByGenre, getTVByGenre } from '../utils/tmdb.js'
+import { getMoviesByLanguage, getTVByLanguage } from '../utils/tmdb.js'
 import { SliderCard } from '../components/slider/SliderCard.jsx'
 import { Loader } from '../components/ui/Loader.jsx'
 import styles from '../styles/Category.module.css'
 
-export const Category = () => {
-  const { genreId, genreName } = useParams()
+const LANGUAGE_LABELS = {
+  bn: 'Bangla',
+  hi: 'Hindi',
+  ta: 'Tamil',
+  te: 'Telugu',
+  bollywood: 'Bollywood',
+}
+
+const LanguagePage = () => {
+  const { langCode, langName } = useParams()
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('movie')
   const [items, setItems] = useState([])
@@ -14,13 +22,13 @@ export const Category = () => {
   const [totalPages, setTotalPages] = useState(1)
   const [loading, setLoading] = useState(false)
 
-  const decodedName = decodeURIComponent(genreName || '')
+  const displayName = LANGUAGE_LABELS[langCode] || decodeURIComponent(langName || langCode)
 
   const fetchItems = useCallback(async (tabType, pageNum) => {
     setLoading(true)
     try {
-      const fetcher = tabType === 'movie' ? getMoviesByGenre : getTVByGenre
-      const data = await fetcher(genreId, pageNum)
+      const fetcher = tabType === 'movie' ? getMoviesByLanguage : getTVByLanguage
+      const data = await fetcher(langCode, pageNum)
       if (pageNum === 1) {
         setItems(data.results || [])
       } else {
@@ -32,14 +40,14 @@ export const Category = () => {
     } finally {
       setLoading(false)
     }
-  }, [genreId])
+  }, [langCode])
 
   useEffect(() => {
-    document.title = `${decodedName} — YourMovieLive`
+    document.title = `${displayName} Movies — YourMovieLive`
     setPage(1)
     setItems([])
     fetchItems(activeTab, 1)
-  }, [genreId, activeTab, fetchItems, decodedName])
+  }, [langCode, activeTab, fetchItems, displayName])
 
   const loadMore = () => {
     const next = page + 1
@@ -58,7 +66,7 @@ export const Category = () => {
     <main className={styles.page}>
       <div className={styles.header}>
         <button className={styles.back} onClick={() => navigate(-1)}>← Back</button>
-        <h1 className={styles.title}>{decodedName}</h1>
+        <h1 className={styles.title}>{displayName}</h1>
       </div>
 
       <div className={styles.tabs}>
@@ -101,3 +109,5 @@ export const Category = () => {
     </main>
   )
 }
+
+export default LanguagePage

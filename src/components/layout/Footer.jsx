@@ -9,7 +9,7 @@ export const Footer = () => {
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.brand}>
-            <img src="/your-movie-live-logo.png" alt="yourmovielive" className={styles.logo} onError={e => { e.target.style.display = 'none' }} />
+            <img src="/your-movie-live-logo.png" alt="YourMovieLive" className={styles.logo} onError={e => { e.target.style.display = 'none' }} />
             <p className={styles.tagline}>Watch movies &amp; TV shows free, anytime.</p>
           </div>
 
@@ -35,12 +35,18 @@ export const Footer = () => {
               <button onClick={() => navigate('/category/10749/Romance')}>Romance</button>
               <button onClick={() => navigate('/category/878/Sci-Fi')}>Sci-Fi</button>
             </div>
+            <div className={styles.linkGroup}>
+              <h4 className={styles.groupTitle}>Support</h4>
+              <a href="mailto:support@yourmovielive.live" className={styles.contactLink}>
+                support@yourmovielive.live
+              </a>
+            </div>
           </div>
         </div>
 
         <div className={styles.bottom}>
           <p>Data provided by <strong>TMDB</strong>. This site does not host any content.</p>
-          <p>&copy; 2026 yourmovielive. All rights reserved.</p>
+          <p>&copy; 2026 YourMovieLive. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -112,6 +112,10 @@
 }
 
 @media (max-width: 768px) {
+  /* The global floating back button replaces the inline one on mobile. */
+  .backBtn {
+    display: none;
+  }
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 16px;

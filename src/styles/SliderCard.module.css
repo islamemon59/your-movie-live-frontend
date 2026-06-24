@@ -1,6 +1,12 @@
 .cardWrapper {
   flex-shrink: 0;
   position: relative;
+  z-index: 1;
+  transition: z-index 0s;
+}
+
+.cardWrapper:hover {
+  z-index: 20;
 }
 
 .rank {
@@ -27,13 +33,22 @@
   cursor: pointer;
   transition: all var(--transition);
   z-index: 1;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .card:hover {
-  transform: scale(1.08);
-  box-shadow: var(--shadow-glow), var(--shadow-card);
+  transform: scale(1.06);
+  box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.85), 0 0 18px rgba(229, 9, 20, 0.6), var(--shadow-card);
   z-index: 10;
 }
+
+/* Fluid mode — used in responsive grids (Category / Language pages) so the
+   card fills its grid cell instead of staying a fixed 170px.
+   Uses .card.fluidCard (specificity 0,2,0) so it also beats the
+   `@media (max-width: 768px) .card { width: 150px }` rule below. */
+.cardWrapper.fluidWrapper { width: 100%; }
+.card.fluidCard { width: 100%; }
 
 .poster {
   width: 100%;
@@ -161,8 +176,8 @@
 }
 
 .cardLandscape:hover {
-  transform: scale(1.05);
-  box-shadow: var(--shadow-glow), var(--shadow-card);
+  transform: scale(1.04);
+  box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.85), 0 0 18px rgba(229, 9, 20, 0.6), var(--shadow-card);
   z-index: 10;
 }
 

@@ -76,8 +76,10 @@ export const DOWNLOAD_SERVERS = {
   ],
 }
 
-// Multi-server embed APIs for movies and TV shows
-// Vidking is first — it becomes the default player
+// Multi-server embed APIs for movies and TV shows.
+// All are free TMDB-based embed providers. Vidking stays first, so it is the
+// default player that loads initially (Player uses index 0). The rest act as
+// fallbacks — if one server is down, the viewer can switch to another.
 export const SERVERS = {
   movie: [
     {
@@ -85,8 +87,28 @@ export const SERVERS = {
       getUrl: (id) => `https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true`,
     },
     {
+      name: 'Videasy',
+      getUrl: (id) => `https://player.videasy.net/movie/${id}?color=e50914`,
+    },
+    {
+      name: 'VidLink',
+      getUrl: (id) => `https://vidlink.pro/movie/${id}?primaryColor=e50914&autoplay=true`,
+    },
+    {
+      name: 'VidFast',
+      getUrl: (id) => `https://vidfast.pro/movie/${id}?theme=e50914&autoPlay=true`,
+    },
+    {
+      name: 'VidSrc.cc',
+      getUrl: (id) => `https://vidsrc.cc/v2/embed/movie/${id}?autoPlay=true`,
+    },
+    {
+      name: 'Embed.su',
+      getUrl: (id) => `https://embed.su/embed/movie/${id}`,
+    },
+    {
       name: 'VidSrc',
-      getUrl: (id) => `https://vidsrc.to/embed/movie/${id}`,
+      getUrl: (id) => `https://vidsrc.xyz/embed/movie?tmdb=${id}`,
     },
     {
       name: '2Embed',
@@ -103,8 +125,28 @@ export const SERVERS = {
       getUrl: (id, s, e) => `https://www.vidking.net/embed/tv/${id}/${s}/${e}?color=e50914&autoPlay=true&nextEpisode=true&episodeSelector=true`,
     },
     {
+      name: 'Videasy',
+      getUrl: (id, s, e) => `https://player.videasy.net/tv/${id}/${s}/${e}?color=e50914&nextEpisode=true&episodeSelector=true`,
+    },
+    {
+      name: 'VidLink',
+      getUrl: (id, s, e) => `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=e50914&autoplay=true&nextbutton=true`,
+    },
+    {
+      name: 'VidFast',
+      getUrl: (id, s, e) => `https://vidfast.pro/tv/${id}/${s}/${e}?theme=e50914&autoPlay=true&nextButton=true`,
+    },
+    {
+      name: 'VidSrc.cc',
+      getUrl: (id, s, e) => `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}?autoPlay=true`,
+    },
+    {
+      name: 'Embed.su',
+      getUrl: (id, s, e) => `https://embed.su/embed/tv/${id}/${s}/${e}`,
+    },
+    {
       name: 'VidSrc',
-      getUrl: (id, s, e) => `https://vidsrc.to/embed/tv/${id}/${s}/${e}`,
+      getUrl: (id, s, e) => `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}`,
     },
     {
       name: '2Embed',

@@ -7,6 +7,20 @@ import styles from '../../styles/LiveTVPanel.module.css'
 // Sports M3U from iptv-org — only football channels will survive isFootball()
 const SPORTS_URL = 'https://iptv-org.github.io/iptv/categories/sports.m3u'
 
+// Always-pinned FREE channel for the FIFA World Cup.
+// FIFA+ is FIFA's own official streaming platform — it carries selected LIVE
+// World Cup matches plus full replays and highlights, worldwide, at no cost.
+// Pinned here so it shows up even when the public iptv-org feed has no FIFA entry.
+const FIFA_PLUS_FREE = {
+  name: 'FIFA+ (Official)',
+  url: 'https://d2w9q46ikgrcwx.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-of5cbk3sav3w5/v1/sysdata_s_p_a_fifa_7/samsungheadend_us/latest/main/hls/playlist.m3u8',
+  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/FIFA%2B_(2025).svg/960px-FIFA%2B_(2025).svg.png',
+  group: 'Football',
+  recoLabel: 'FIFA+ — FREE World Cup',
+  recoNote: 'FIFA’s official free channel — live World Cup matches, replays & highlights',
+  free: true,
+}
+
 // Priority broadcaster patterns for FIFA World Cup 2026
 // Channels that match these keywords (in order) are surfaced as "Recommended"
 const RECO_PATTERNS = [
@@ -194,7 +208,8 @@ export default function LiveTVPanel() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const all      = parseM3U(await res.text())
       const football = all.filter(isFootball).slice(0, 500)
-      const reco     = extractRecommended(football)
+      // Pin the free FIFA+ channel first, then the auto-detected broadcasters
+      const reco     = [FIFA_PLUS_FREE, ...extractRecommended(football)]
       cache.current  = { all: football, reco }
       setChannels(football)
       setRecommended(reco)
@@ -245,7 +260,10 @@ export default function LiveTVPanel() {
                 <div className={styles.recoCardTop}>
                   <ChannelLogo logo={ch.logo} name={ch.recoLabel} size={36} />
                   <div className={styles.recoInfo}>
-                    <div className={styles.recoLabel}>{ch.recoLabel}</div>
+                    <div className={styles.recoLabel}>
+                      {ch.recoLabel}
+                      {ch.free && <span className={styles.freeBadge}>FREE</span>}
+                    </div>
                     <div className={styles.recoChName}>{ch.name}</div>
                   </div>
                 </div>

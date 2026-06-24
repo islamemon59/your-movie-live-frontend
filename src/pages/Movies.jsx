@@ -15,7 +15,7 @@ import {
 
 const Movies = () => {
   useEffect(() => {
-    document.title = 'Movies — yourmovielive'
+    document.title = 'Movies — YourMovieLive'
   }, [])
 
   return (

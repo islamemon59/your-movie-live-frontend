@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { HeroBanner } from '../components/hero/HeroBanner.jsx'
 import { SliderSection } from '../components/slider/SliderSection.jsx'
@@ -24,21 +24,6 @@ export const Home = () => {
   const navigate = useNavigate()
   const { hasPreferences, hasPlayHistory, getPreferredGenreIds, prefs } = useUserPreferences()
   const playHistory = prefs.playHistory || []
-  const continueRowRef = useRef(null)
-
-  // Same wheel-passthrough fix as SliderRow — vertical scroll goes to page
-  useEffect(() => {
-    const el = continueRowRef.current
-    if (!el) return
-    const handler = (e) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault()
-        window.scrollBy({ top: e.deltaY, behavior: 'auto' })
-      }
-    }
-    el.addEventListener('wheel', handler, { passive: false })
-    return () => el.removeEventListener('wheel', handler)
-  }, [])
 
   const preferredGenreIds = useMemo(() => getPreferredGenreIds(3), [getPreferredGenreIds])
 
@@ -49,7 +34,7 @@ export const Home = () => {
   }, [hasPreferences, preferredGenreIds.join(',')])
 
   useEffect(() => {
-    document.title = 'yourmovielive — Watch Movies & TV Shows'
+    document.title = 'YourMovieLive — Watch Movies & TV Shows'
     window.scrollTo(0, 0)
   }, [])
 
@@ -74,7 +59,7 @@ export const Home = () => {
                   View All History →
                 </button>
               </div>
-              <div ref={continueRowRef} style={{ display: 'flex', gap: '12px', overflowX: 'auto', padding: '4px 8px 12px', scrollbarWidth: 'none' }}>
+              <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', overflowY: 'hidden', padding: '4px 8px 12px', scrollbarWidth: 'none', overscrollBehaviorX: 'contain' }}>
                 {playHistory.slice(0, 10).map((item, i) => (
                   <div
                     key={`${item.id}-${i}`}

@@ -1,14 +1,16 @@
 .wrapper {
   position: relative;
-  margin: 16px 0;
+  margin: 4px 0;
 }
 
 .container {
   display: flex;
-  gap: 8px;
+  gap: 14px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding-bottom: 8px;
+  /* padding must be >= shadow blur so glow isn't clipped */
+  padding-top: 14px;
+  padding-bottom: 14px;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
 }
@@ -25,7 +27,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 30;
   width: 44px;
   height: 44px;
   border-radius: 50%;

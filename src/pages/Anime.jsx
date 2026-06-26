@@ -3,7 +3,7 @@ import { HeroBanner } from '../components/hero/HeroBanner.jsx'
 import { TrendingUp, Star } from 'lucide-react'
 import { SliderSection } from '../components/slider/SliderSection.jsx'
 import {
-  getHeroAnimeMovies,
+  getLatestAnimationHero,
   getAnimeMovies,
   getAnimeTV,
   getTopRatedAnimeMovies,
@@ -18,7 +18,7 @@ const Anime = () => {
   return (
     <>
       {/* Hero Banner */}
-      <HeroBanner fetchFn={getHeroAnimeMovies} />
+      <HeroBanner fetchFn={getLatestAnimationHero} />
 
       {/* Main content */}
       <main style={{

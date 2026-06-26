@@ -168,9 +168,10 @@
   flex-shrink: 0;
 }
 
-@media (max-width: 900px) {
-  .ticker { max-width: 220px; padding: 4px 10px; }
-}
-@media (max-width: 768px) {
+/* The ticker needs real horizontal room to scroll the match data. Below this
+   width the nav + search leave it only a sliver, so it collapses into a tiny
+   pill (a broken-looking red circle). Hide it there instead — the "FIFA Live"
+   nav link and the /fifa-live page still provide full access. */
+@media (max-width: 1200px) {
   .ticker { display: none; }
 }

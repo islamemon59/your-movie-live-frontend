@@ -94,8 +94,29 @@
     font-size: 20px;
   }
 
+  /* Horizontal slider on phones: a single swipeable row of cast cards
+     (image + name + character) instead of a wrapping grid. */
   .row {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 12px;
+    display: flex;
+    grid-template-columns: none;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* breathing room so cards don't sit flush against the screen edges */
+    padding: 0 2px 12px;
+    margin: 0 -2px;
+  }
+
+  .row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card {
+    flex: 0 0 92px;
+    width: 92px;
+    scroll-snap-align: start;
+    min-height: 0;
   }
 }

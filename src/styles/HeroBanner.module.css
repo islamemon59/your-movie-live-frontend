@@ -8,6 +8,8 @@
   overflow: hidden;
   background: #0a0a0f;
   margin-left: calc(-50vw + 50%);
+  /* The banner sits in its own space below the header — the header keeps its
+     own strip at the top (main already has padding-top: var(--header-height)). */
 }
 
 .backgroundContainer {

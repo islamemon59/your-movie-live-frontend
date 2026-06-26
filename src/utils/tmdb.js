@@ -963,3 +963,150 @@ export const getTopRatedAnimeTV = async () => {
   }
 }
 
+// ─── AUTO-UPDATING HERO BANNERS (LATEST RELEASES BY REGION) ──────────────
+//
+// These power the rotating hero/banner sliders. They always ask TMDB for the
+// newest *released* titles (sorted by release date, capped at today, within a
+// recent window), so the moment a movie/show releases and appears on TMDB it
+// shows up here automatically — there is nothing to update by hand.
+//
+// Because this is a pure frontend (no backend/DB), "auto" works like this:
+//   1. TMDB is the live source of truth — it lists new releases as they drop.
+//   2. Every page load re-queries these endpoints, so visitors always get the
+//      latest.
+//   3. The HeroBanner additionally re-fetches on an interval and when the tab
+//      is refocused, so even a long-open tab keeps itself current.
+// This is the "observer": newest Bollywood releases land in the Bollywood group,
+// newest Tamil in the Tamil group, and so on, with zero manual curation.
+
+// genre_ids → name (covers both movie & TV ids) so a slide can render genre
+// badges without an extra per-title details request.
+const GENRE_NAME_BY_ID = Object.fromEntries(
+  [...MOVIE_GENRES, ...TV_GENRES].map(g => [g.id, g.name])
+)
+
+const todayISO = () => new Date().toISOString().slice(0, 10)
+const isoMonthsAgo = (n) => {
+  const d = new Date()
+  d.setMonth(d.getMonth() - n)
+  return d.toISOString().slice(0, 10)
+}
+
+// One /discover/movie query for the newest released films matching `extra`.
+const discoverLatestMovies = async (extra = {}, monthsBack = 24) => {
+  const url = buildUrl('/discover/movie', {
+    sort_by: 'primary_release_date.desc',
+    'primary_release_date.lte': todayISO(),
+    'primary_release_date.gte': isoMonthsAgo(monthsBack),
+    include_adult: 'false',
+    page: 1,
+    ...extra,
+  })
+  const response = await fetch(url)
+  if (!response.ok) throw new Error(`HTTP ${response.status}`)
+  const data = await response.json()
+  // Banners need a real backdrop + poster + blurb to look good.
+  return (data.results || []).filter(m => m.backdrop_path && m.poster_path && m.overview)
+}
+
+// One /discover/tv query for the newest first-aired shows matching `extra`.
+const discoverLatestTV = async (extra = {}, monthsBack = 24) => {
+  const url = buildUrl('/discover/tv', {
+    sort_by: 'first_air_date.desc',
+    'first_air_date.lte': todayISO(),
+    'first_air_date.gte': isoMonthsAgo(monthsBack),
+    include_adult: 'false',
+    page: 1,
+    ...extra,
+  })
+  const response = await fetch(url)
+  if (!response.ok) throw new Error(`HTTP ${response.status}`)
+  const data = await response.json()
+  return (data.results || []).filter(t => t.backdrop_path && t.poster_path && t.overview)
+}
+
+const toGenres = (ids = []) =>
+  ids.map(id => ({ id, name: GENRE_NAME_BY_ID[id] })).filter(g => g.name)
+
+const formatMovieSlide = (m, label) => ({
+  id: m.id,
+  title: m.title,
+  overview: m.overview,
+  backdrop_path: m.backdrop_path,
+  poster_path: m.poster_path,
+  vote_average: m.vote_average,
+  release_date: m.release_date,
+  media_type: 'movie',
+  category: label,
+  genres: toGenres(m.genre_ids),
+})
+
+const formatTVSlide = (t, label) => ({
+  id: t.id,
+  title: t.name,
+  overview: t.overview,
+  backdrop_path: t.backdrop_path,
+  poster_path: t.poster_path,
+  vote_average: t.vote_average,
+  release_date: t.first_air_date,
+  media_type: 'tv',
+  category: label,
+  genres: toGenres(t.genre_ids),
+})
+
+// A hero "group" = one or more discover queries, merged newest-first, de-duped
+// and capped to `limit`. A single failing query never blanks the whole group.
+const fetchHeroGroup = async ({ label, queries, media = 'movie', limit = 3, monthsBack = 24 }) => {
+  try {
+    const discover = media === 'tv' ? discoverLatestTV : discoverLatestMovies
+    const format = media === 'tv' ? formatTVSlide : formatMovieSlide
+    const dateOf = (x) => (media === 'tv' ? x.first_air_date : x.release_date) || ''
+
+    const lists = await Promise.all(queries.map(q => discover(q, monthsBack).catch(() => [])))
+    const seen = new Set()
+    const unique = []
+    for (const item of lists.flat()) {
+      if (!seen.has(item.id)) { seen.add(item.id); unique.push(item) }
+    }
+    unique.sort((a, b) => dateOf(b).localeCompare(dateOf(a)))
+    return unique.slice(0, limit).map(item => format(item, label))
+  } catch (error) {
+    console.error(`Hero group "${label}" failed:`, error)
+    return []
+  }
+}
+
+// The home hero: 3 latest from each region, grouped in this exact order —
+// Bollywood → Tamil → Hollywood → Animation → Korean & Chinese (15 slides).
+// Add/remove/reorder a line here and the banner updates accordingly.
+const HOME_HERO_GROUPS = [
+  { label: 'Latest Bollywood',         queries: [{ with_original_language: 'hi', with_origin_country: 'IN' }] },
+  { label: 'Latest Tamil',             queries: [{ with_original_language: 'ta' }] },
+  { label: 'Latest Hollywood',         queries: [{ with_original_language: 'en', with_origin_country: 'US' }] },
+  { label: 'Latest Animation',         queries: [{ with_genres: '16' }] },
+  // TMDB's with_original_language takes a single code, so Korean + Chinese are
+  // two queries merged into one 3-slide group.
+  { label: 'Latest Korean & Chinese',  queries: [{ with_original_language: 'ko' }, { with_original_language: 'zh' }] },
+]
+
+export const getHomeHeroSlides = async () => {
+  const groups = await Promise.all(
+    HOME_HERO_GROUPS.map(g => fetchHeroGroup({ ...g, limit: 3 }))
+  )
+  const slides = groups.flat()
+  // Never leave the hero empty if every regional query came back thin.
+  return slides.length ? slides : await getHighRated2026Movies()
+}
+
+// Factory for a single-category hero (themed pages). Returns a fetch fn for
+// <HeroBanner fetchFn={...} />, with a graceful fallback so it's never empty.
+const makeLatestHero = (group, limit = 12) => async () => {
+  const slides = await fetchHeroGroup({ ...group, limit })
+  return slides.length ? slides : await getHighRated2026Movies()
+}
+
+// Themed-page hero banners — each shows that page's latest releases, same engine.
+export const getLatestAnimationHero = makeLatestHero({ label: 'Latest Animation', media: 'movie', queries: [{ with_genres: '16' }] })
+export const getLatestKidsHero = makeLatestHero({ label: 'Latest Kids & Family', media: 'movie', queries: [{ with_genres: '10751' }] })
+export const getLatestTVHero = makeLatestHero({ label: 'Latest Shows', media: 'tv', queries: [{ 'vote_count.gte': 20 }] })
+

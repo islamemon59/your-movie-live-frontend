@@ -177,45 +177,50 @@
   position: relative;
 }
 
+/* One unified pill: input + icon button share a single rounded border. */
 .searchContainer {
   display: flex;
-  gap: 6px;
   align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding-left: 16px;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.searchContainer:focus-within {
+  border-color: rgba(229, 9, 20, 0.55);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.12);
 }
 
 .searchInput {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: transparent;
+  border: none;
   color: var(--text-primary);
-  padding: 8px 12px;
+  padding: 9px 4px;
   font-size: 13px;
-  width: 190px;
+  width: 170px;
+  min-width: 0;
   font-family: 'DM Sans', sans-serif;
-  transition: border-color 0.2s, background 0.2s, width 0.25s ease;
+  transition: width 0.25s ease;
 }
-.searchInput:focus {
-  outline: none;
-  border-color: var(--accent);
-  background: rgba(255, 255, 255, 0.13);
-  width: 240px;
-}
+.searchInput:focus { outline: none; width: 210px; }
 .searchInput::placeholder { color: var(--text-muted); }
 
 .searchButton {
-  background: var(--accent);
-  color: #fff;
+  background: transparent;
+  color: var(--text-muted);
   border: none;
-  border-radius: var(--radius);
-  padding: 8px 12px;
+  border-radius: 999px;
+  padding: 8px 14px 8px 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--transition);
+  transition: color 0.2s ease;
   flex-shrink: 0;
 }
-.searchButton:hover { background: var(--accent-hover); }
+.searchButton:hover { color: var(--accent); }
 
 /* ── Live Suggestions ── */
 .suggestionBox {
@@ -539,16 +544,29 @@
     position: absolute;
     top: 50%;
     left: 12px;
-    right: 52px;
+    /* leave room for the ✕ toggle (≈42px wide, 16px from the edge) plus a gap
+       so the search bar never overlaps the close button */
+    right: 66px;
     transform: translateY(-50%);
     z-index: 60;
   }
-  .searchWrapOpen .searchContainer { width: 100%; }
+  .searchWrapOpen .searchContainer { width: 100%; background: rgba(20, 20, 28, 0.98); }
   .searchWrapOpen .searchInput,
   .searchWrapOpen .searchInput:focus {
+    flex: 1;
     width: 100%;
     font-size: 14px;
-    background: rgba(20, 20, 28, 0.98);
   }
   .searchWrapOpen .suggestionBox { left: 0; right: 0; min-width: 0; }
+
+  /* While the search bar is expanded, declutter the other action buttons and
+     keep the toggle (now an ✕) on top so it works as a clear close button. */
+  .actionsSearchOpen .watchlistBtn,
+  .actionsSearchOpen .hamburger {
+    display: none;
+  }
+  .actionsSearchOpen .mobileSearchToggle {
+    position: relative;
+    z-index: 61;
+  }
 }

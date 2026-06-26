@@ -3,7 +3,7 @@ import { HeroBanner } from '../components/hero/HeroBanner.jsx'
 import { Star, Sparkles, Play } from 'lucide-react'
 import { SliderSection } from '../components/slider/SliderSection.jsx'
 import {
-  getHeroKidsMovies,
+  getLatestKidsHero,
   getDisneyKidsMovies,
   getDisneyKidsTV,
   getKidsMovies,
@@ -18,7 +18,7 @@ const Kids = () => {
   return (
     <>
       {/* Hero Banner */}
-      <HeroBanner fetchFn={getHeroKidsMovies} />
+      <HeroBanner fetchFn={getLatestKidsHero} />
 
       {/* Main content */}
       <main style={{

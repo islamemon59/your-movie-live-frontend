@@ -26,23 +26,6 @@ const FLAG = {
   // ESPN alternate codes
   HOL:'nl', GBR:'gb', EIR:'ie', NLD:'nl', DEU:'de', CUW:'cw', MTQ:'mq',
   SKN:'kn', TCA:'tc', LCA:'lc', VGB:'vg', GUF:'gf', SUR:'sr', TLS:'tl',
-  // FIFA 2026 confirmed participants (ESPN may use these)
-  GUY:'gy', SUR:'sr', VEN:'ve', BOL:'bo', PAR:'py', CHI:'cl', ECU:'ec',
-  COL:'co', PER:'pe', URU:'uy', ARG:'ar', BRA:'br', MEX:'mx', USA:'us',
-  CAN:'ca', PAN:'pa', CRC:'cr', HON:'hn', ESA:'sv', GTM:'gt', JAM:'jm',
-  TRI:'tt', CUB:'cu', DOM:'do', HAI:'ht', NCA:'ni', MTQ:'mq', CUW:'cw',
-  // Africa — FIFA 2026
-  MAR:'ma', EGY:'eg', NGA:'ng', SEN:'sn', GHA:'gh', CMR:'cm', TUN:'tn',
-  ALG:'dz', CIV:'ci', BEN:'bj', GUI:'gn', CPV:'cv', ANG:'ao', ZAM:'zm',
-  // Asia
-  JPN:'jp', KOR:'kr', IRN:'ir', SAU:'sa', QAT:'qa', AUS:'au', IDN:'id',
-  JOR:'jo', IRQ:'iq', UZB:'uz', KAZ:'kz', OMA:'om', UAE:'ae', KWT:'kw',
-  // Europe
-  ESP:'es', FRA:'fr', GER:'de', ITA:'it', POR:'pt', BEL:'be', NED:'nl',
-  POL:'pl', CRO:'hr', SUI:'ch', DEN:'dk', AUT:'at', SCO:'gb-sct', WAL:'gb-wls',
-  ENG:'gb-eng', NOR:'no', SWE:'se', FIN:'fi', HUN:'hu', CZE:'cz', SVK:'sk',
-  SVN:'si', GRE:'gr', TUR:'tr', UKR:'ua', SRB:'rs', MNE:'me', BIH:'ba',
-  MKD:'mk', GEO:'ge', ALB:'al', ISL:'is', IRL:'ie', ROM:'ro',
   // ISO 2-letter fallbacks (ESPN occasionally sends these)
   JP:'jp', ES:'es', DE:'de', FR:'fr', BR:'br', AR:'ar', US:'us', GB:'gb',
   SA:'sa', BE:'be', HR:'hr', PT:'pt', IT:'it', NL:'nl', PL:'pl', SN:'sn',

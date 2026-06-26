@@ -234,7 +234,7 @@ export const Header = () => {
 
         <NavTicker />
 
-        <div className={styles.actions}>
+        <div className={`${styles.actions} ${mobileSearchOpen ? styles.actionsSearchOpen : ''}`}>
           {/* Mobile search toggle — expands the search bar on phones */}
           <button
             className={styles.mobileSearchToggle}

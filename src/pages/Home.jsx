@@ -17,7 +17,8 @@ import {
   getComedyMovies, getComedyTV,
   getTop10TodayMovies, getTop10TodayTV,
   getUpcomingMovies,
-  getLatest2026Movies
+  getLatest2026Movies,
+  getHomeHeroSlides
 } from '../utils/tmdb.js'
 
 export const Home = () => {
@@ -35,12 +36,11 @@ export const Home = () => {
 
   useEffect(() => {
     document.title = 'YourMovieLive — Watch Movies & TV Shows'
-    window.scrollTo(0, 0)
   }, [])
 
   return (
     <>
-      <HeroBanner />
+      <HeroBanner fetchFn={getHomeHeroSlides} />
 
       <main style={{ width: '100%', padding: '0 8px' }}>
         <div style={{ maxWidth: '100%', margin: '0 auto' }}>

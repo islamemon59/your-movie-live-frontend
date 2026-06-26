@@ -14,6 +14,7 @@ import { DownloadButton } from '../components/ui/DownloadButton.jsx'
 import { HowToDownload } from '../components/ui/HowToDownload.jsx'
 import { Loader } from '../components/ui/Loader.jsx'
 import { ErrorMessage } from '../components/ui/ErrorMessage.jsx'
+import styles from '../styles/MovieDetail.module.css'
 
 const MovieDetail = () => {
   const { id } = useParams()
@@ -147,7 +148,7 @@ const MovieDetail = () => {
         </TrailerBanner>
       )}
 
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '40px 32px' }}>
+      <div className={styles.container}>
 
         <MediaInfo media={movie} mediaType="movie" />
 

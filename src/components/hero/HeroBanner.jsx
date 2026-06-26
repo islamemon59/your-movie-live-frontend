@@ -12,7 +12,7 @@ import styles from "../../styles/HeroBanner.module.css";
 export const HeroBanner = ({ fetchFn = getHighRated2026Movies }) => {
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const timerRef = useRef(null);
   const touchStartX = useRef(null);
   const containerRef = useRef(null);
@@ -20,7 +20,23 @@ export const HeroBanner = ({ fetchFn = getHighRated2026Movies }) => {
   // Keep a ref to latest items.length so interval never goes stale
   const itemsLengthRef = useRef(0);
 
-  const { data: slides, loading, error } = useTMDB(() => fetchFn(), [fetchFn]);
+  // "Observer" auto-refresh: re-pull the latest releases on an interval and
+  // whenever the tab regains focus, so a long-open page keeps showing newly
+  // released titles without a manual reload.
+  useEffect(() => {
+    const REFRESH_MS = 30 * 60 * 1000; // 30 min
+    const id = setInterval(() => setRefreshKey((k) => k + 1), REFRESH_MS);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") setRefreshKey((k) => k + 1);
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, []);
+
+  const { data: slides, loading, error } = useTMDB(() => fetchFn(), [fetchFn, refreshKey]);
   const items = slides || [];
 
   // Keep ref in sync
@@ -57,29 +73,26 @@ export const HeroBanner = ({ fetchFn = getHighRated2026Movies }) => {
     e.clientX - rect.left < rect.width / 2 ? prev() : next();
   };
 
-  // Auto-rotation: stable interval, reads latest length via ref
+  // Auto-rotation: stable interval, reads latest length via ref. Keeps running
+  // even while the cursor is over the banner (no pause-on-hover).
   useEffect(() => {
     // Don't start until data is loaded
     if (items.length === 0) return;
 
-    const startTimer = () => {
-      timerRef.current = setInterval(() => {
-        if (!paused) {
-          setCurrentSlide((prev) => (prev + 1) % itemsLengthRef.current);
-        }
-      }, 3000);
-    };
-
-    startTimer();
+    timerRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % itemsLengthRef.current);
+    }, 3000);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-    // Only re-run when data first loads or paused state changes
-  }, [items.length > 0, paused]);
+    // Only re-run when data first loads
+  }, [items.length > 0]);
 
-  if (loading) return <Loader />;
-  if (error) return <ErrorMessage message={error} />;
+  // Only show the loader/error on the very first load — keep the current slides
+  // on screen while a background refresh fetches newer releases.
+  if (loading && items.length === 0) return <Loader />;
+  if (error && items.length === 0) return <ErrorMessage message={error} />;
   if (items.length === 0) return null;
 
   const currentItem = items[currentSlide];
@@ -89,8 +102,6 @@ export const HeroBanner = ({ fetchFn = getHighRated2026Movies }) => {
     <div
       ref={containerRef}
       className={styles.hero}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onClick={handleBannerClick}
@@ -138,7 +149,7 @@ export const HeroBanner = ({ fetchFn = getHighRated2026Movies }) => {
             className={`${styles.button} ${styles.primary}`}
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/movie/${currentItem.id}`);
+              navigate(`/${currentItem.media_type || "movie"}/${currentItem.id}`);
             }}
           >
             <Play size={20} style={{ marginRight: "8px" }} />

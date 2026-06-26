@@ -52,7 +52,6 @@ export default function Live() {
   const [groupFilter, setGroupFilter] = useState('ALL');
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     document.title = '⚽ FIFA World Cup 2026 | YourMovieLive';
   }, []);
 

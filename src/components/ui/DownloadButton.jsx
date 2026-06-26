@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { Download, ChevronDown, ExternalLink } from 'lucide-react'
 import { DOWNLOAD_SERVERS } from '../../config.js'
 import styles from '../../styles/DownloadButton.module.css'
@@ -7,20 +7,35 @@ export const DownloadButton = ({ tmdbId, title = '', mediaType = 'movie', season
   const [open, setOpen] = useState(false)
   const [dropPos, setDropPos] = useState({ top: 0, left: 0 })
   const btnRef = useRef(null)
+  const dropRef = useRef(null)
 
   const servers = DOWNLOAD_SERVERS[mediaType] || DOWNLOAD_SERVERS.movie
 
-  const handleToggle = () => {
-    if (!open && btnRef.current) {
-      const rect = btnRef.current.getBoundingClientRect()
-      setDropPos({ top: rect.bottom + 10, left: rect.left })
-    }
-    setOpen(o => !o)
-  }
+  const handleToggle = () => setOpen(o => !o)
+
+  // Center the dropdown horizontally under the button, then keep it inside the
+  // viewport. Measuring the real rendered width (instead of guessing) avoids
+  // overflow when the CSS makes the menu wider on phones.
+  useLayoutEffect(() => {
+    if (!open || !btnRef.current || !dropRef.current) return
+    const rect = btnRef.current.getBoundingClientRect()
+    const margin = 8
+    const width = dropRef.current.offsetWidth
+    const centered = rect.left + rect.width / 2 - width / 2
+    const maxLeft = window.innerWidth - width - margin
+    const left = Math.max(margin, Math.min(centered, maxLeft))
+    setDropPos({ top: rect.bottom + 10, left })
+  }, [open])
 
   useEffect(() => {
     if (!open) return
-    const close = () => setOpen(false)
+    // Ignore clicks on the trigger button itself — otherwise this mousedown
+    // closes the menu a tick before the button's click handler reopens it,
+    // making the dropdown impossible to close by tapping the button again.
+    const close = (e) => {
+      if (btnRef.current && btnRef.current.contains(e.target)) return
+      setOpen(false)
+    }
     document.addEventListener('mousedown', close)
     window.addEventListener('scroll', close, true)
     return () => {
@@ -46,6 +61,7 @@ export const DownloadButton = ({ tmdbId, title = '', mediaType = 'movie', season
 
       {open && (
         <div
+          ref={dropRef}
           className={styles.dropdown}
           style={{ top: dropPos.top, left: dropPos.left }}
           onMouseDown={e => e.stopPropagation()}

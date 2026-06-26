@@ -99,8 +99,11 @@ button {
   background: var(--accent);
 }
 
-scrollbar-width: thin;
-scrollbar-color: var(--border) transparent;
+/* Firefox scrollbar styling (the ::-webkit rules above cover Chrome/Safari) */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
 
 /* Disable hover/pointer state on cards while scrolling to prevent jank */
 body.is-scrolling [data-scroll-disable] {

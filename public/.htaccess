@@ -1,4 +1,21 @@
 Options -MultiViews
 RewriteEngine On
+
+# ── FORCE HTTPS ────────────────────────────────────────────────────────────
+# IMPORTANT: the streaming players only run in a browser "secure context".
+# http://localhost is treated as secure (so it works while developing), but a
+# real domain over plain http:// is an INSECURE context — there the embeds spin
+# on "Loading..." forever. The fix is to serve the site over HTTPS.
+#
+#   1) Enable SSL for the domain FIRST (cPanel > "SSL/TLS Status" > Run AutoSSL,
+#      or Let's Encrypt, or put the site behind Cloudflare — all free).
+#   2) THEN uncomment the 3 lines below to send every visitor to https://.
+#      Do NOT uncomment before SSL is active, or the site becomes unreachable.
+#
+# RewriteCond %{HTTPS} off
+# RewriteCond %{HTTP:X-Forwarded-Proto} !https
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ── SPA fallback — serve index.html for any non-file route ──────────────────
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.html [QSA,L]

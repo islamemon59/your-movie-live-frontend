@@ -33,7 +33,12 @@ export const TrailerBanner = ({ trailerKey, backdropPath, children }) => {
         <>
           <iframe
             className={`${styles.video} ${videoLoaded ? styles.loaded : ''}`}
-            src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&loop=1&playlist=${trailerKey}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1`}
+            // Privacy-enhanced domain (youtube-nocookie) skips most of YouTube's
+            // ad/analytics pings (ptracking, log_event, generate_204) that ad
+            // blockers flag as "ERR_BLOCKED_BY_CLIENT" — the trailer is identical.
+            // NOTE: do NOT set referrerPolicy="no-referrer" here — YouTube needs
+            // the referer to authorize embedding, or it throws Error 153.
+            src={`https://www.youtube-nocookie.com/embed/${trailerKey}?autoplay=1&mute=1&loop=1&playlist=${trailerKey}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1`}
             frameBorder="0"
             allow="autoplay; fullscreen"
             onLoad={() => setVideoLoaded(true)}

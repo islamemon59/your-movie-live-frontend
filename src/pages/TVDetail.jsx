@@ -14,6 +14,7 @@ import { CastSection } from "../components/detail/CastSection.jsx";
 import { SliderRow } from "../components/slider/SliderRow.jsx";
 import { Loader } from "../components/ui/Loader.jsx";
 import { ErrorMessage } from "../components/ui/ErrorMessage.jsx";
+import styles from "../styles/TVDetail.module.css";
 
 const TVDetail = () => {
   const { id } = useParams();
@@ -144,9 +145,7 @@ const TVDetail = () => {
         </div>
       </TrailerBanner>
 
-      <div
-        style={{ maxWidth: "1400px", margin: "0 auto", padding: "40px 32px" }}
-      >
+      <div className={styles.container}>
         <MediaInfo media={tv} mediaType="tv" />
 
         <div style={{ margin: "40px 0" }}>

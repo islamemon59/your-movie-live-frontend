@@ -17,7 +17,6 @@ export const HeroBanner = ({ fetchFn = getHighRated2026Movies }) => {
   const touchStartX = useRef(null);
   const containerRef = useRef(null);
 
-  // Keep a ref to latest items.length so interval never goes stale
   const itemsLengthRef = useRef(0);
 
   // "Observer" auto-refresh: re-pull the latest releases on an interval and
